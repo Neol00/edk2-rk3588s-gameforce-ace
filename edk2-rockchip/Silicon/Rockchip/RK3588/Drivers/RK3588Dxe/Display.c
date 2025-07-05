@@ -176,6 +176,21 @@ InitializeDisplayVariables (
   if (EFI_ERROR (Status)) {
     Status = PcdSet16S (PcdDisplayRotation, FixedPcdGet16 (PcdDisplayRotationDefault));
     ASSERT_EFI_ERROR (Status);
+  } else {
+    // FORCE: Always override stored rotation to 0 degrees for Gameforce Ace
+    // This ensures HDMI output is always in landscape mode regardless of stored settings
+    Status = PcdSet16S (PcdDisplayRotation, 0);
+    ASSERT_EFI_ERROR (Status);
+    
+    // Also update the stored variable to reflect this change
+    Var16 = 0;
+    gRT->SetVariable (
+      L"DisplayRotation",
+      &gRK3588DxeFormSetGuid,
+      EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      sizeof (Var16),
+      &Var16
+      );
   }
 
   Size   = sizeof (Var8);

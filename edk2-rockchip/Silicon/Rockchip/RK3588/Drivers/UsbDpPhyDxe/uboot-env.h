@@ -10,7 +10,7 @@ typedef UINT32 u32;
 typedef UINT64 u64;
 typedef unsigned int uint;
 typedef UINTN ulong;
-typedef BOOLEAN bool;
+// typedef BOOLEAN bool; // Commented out to avoid conflict with built-in bool type
 
 #define true TRUE
 #define false FALSE
